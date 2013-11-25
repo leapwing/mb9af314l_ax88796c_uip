@@ -75,8 +75,8 @@ int32_t main(void)
 	Scheduler_Start();
 #if 0
 	// Configure uIP
-	timer_set(&stcPeriodicTimer, CLOCK_SECOND / 2);
-	timer_set(&stcArpTimer, CLOCK_SECOND * 10);
+	timer_set(&PeriodicTimer, CLOCK_SECOND / 2);
+	timer_set(&ArpTimer, CLOCK_SECOND * 10);
 	//FM3_Ethernet_init();
 	uip_init();
 
