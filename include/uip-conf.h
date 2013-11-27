@@ -151,7 +151,6 @@ typedef unsigned short uip_stats_t;
 /*#include "resolv.h"*/
 /*#include "webclient.h"*/
 
-
 #define UIP_IPADDR0 192
 #define UIP_IPADDR1 168
 #define UIP_IPADDR2   1
@@ -167,7 +166,7 @@ typedef unsigned short uip_stats_t;
 #define UIP_DRIPADDR2     1
 #define UIP_DRIPADDR3     1
 
-#define UIP_FIXEDETHADDR 1
+
 #define UIP_ETHADDR0 0x00
 #define UIP_ETHADDR1 0x01
 #define UIP_ETHADDR2 0x01

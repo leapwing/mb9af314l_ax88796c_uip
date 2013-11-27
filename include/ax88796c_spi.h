@@ -7,12 +7,13 @@ extern "C" {
 	
 #include <stdint.h> 
 #include "mcu.h"
-
+#include "phy.h"
+	
 #define PHY_ID 0x10
 #define AX_PS_D0		0
 #define AX_PS_D1		1
 #define AX_PS_D2		2
-#define AX_PS_DEFAULT_LEVEL		AX_PS_D2 
+#define AX_PS_DEFAULT_LEVEL		AX_PS_D1 
 #define AX_COMP_DEFAULT 0			
 #define BUS_TYPE_SPI			(0x0060)
 //-----------------------------------------
@@ -53,7 +54,7 @@ extern "C" {
 	#define IMR_LINK		(1 << 9)
 	#define IMR_MASKALL		(0xFFFF)
 	#define IMR_DEFAULT		(IMR_TXERR)
-	#define IMR_ENALL		(~IMR_RXPKT)
+	#define IMR_ENALL		(IMR_MASKALL)//(~IMR_RXPKT)
 #define P0_WFCR		(0x0A)
 	#define WFCR_PMEIND		(1 << 0) /* PME indication */
 	#define WFCR_PMETYPE		(1 << 1) /* PME I/O type */
@@ -518,28 +519,36 @@ struct rx_header {
                                     bFM3_GPIO_DDR3_PB=1, \
                                     bFM3_GPIO_PFR3_PB=0 )
 									
-#define AX88796C_RST_OUT(v)  	(bFM3_GPIO_PDOR1_P3 = v)
+#define AX88796C_RST_OUT(v)  	(bFM3_GPIO_PDOR3_PB = v)
 
 #define AX88796C_INT_INIT() ( bFM3_GPIO_DDR1_P4=0, \
                                 bFM3_GPIO_PFR1_P4=0 )
 
 #define AX88796C_INT_GET (bFM3_GPIO_PDIR1_P4)
 
-
-void axspi_read_status (void* status);
-void axspi_wakeup (void);
 uint16_t axspi_read_reg(uint8_t reg_addr);
 void axspi_write_reg(uint8_t reg_addr, uint16_t reg_value);
+void axspi_read_status (void* status);
+void axspi_write_reg(uint8_t reg_addr, uint16_t reg_value);
+void axspi_write_txq (void *data, int len);
+void axspi_wakeup (void);
+
+void ax88796c_spimode_reset(void);
+void ax88796c_set_enetaddr(uint8_t *macaddr);
+void ax88796c_get_enetaddr(uint8_t *macaddr);
 int32_t ax88796c_mdio_read(int32_t phy_id, int32_t loc);
-int32_t ax88796c_init(uint8_t *macaddr);
+int32_t ax88796c_mdio_write(int32_t phy_id, int32_t loc, int32_t value);
+int32_t ax88796c_softreset(void);
+int32_t ax88796c_check_power_and_wake(void);
+void ax88796c_set_power_saving(uint8_t ps_level);
+int32_t ax88796c_checkbus(void);
 int32_t ax88796c_check_int(void);
 int32_t ax88796c_clear_int(uint16_t isr);
-//uint32_t ax88796c_packet_receive ( uint8_t *buffer, uint32_t max_length );
-//void ax88796c_packet_send( uint8_t *buffer, uint32_t length );
-void ax88796c_get_enetaddr(uint8_t *macaddr);
+int32_t ax88796c_check_media(void);
 
-int32_t ax88796c_mask_int(void);
-int32_t ax88796c_unmask_int(uint16_t isr);
+int32_t ax88796c_init(uint8_t *macaddr);
+uint32_t ax88796c_packet_receive(uint8_t *buffer);
+void ax88796c_packet_send(uint8_t *buffer, uint32_t length);
 
 int32_t ax88796c_CheckPacketReceive(void);
 int32_t ax88796c_BeginPacketReceive(void);
@@ -548,7 +557,6 @@ int32_t ax88796c_EndPacketReceive(void);
 int32_t ax88796c_BeginPacketSend(uint32_t length);
 int32_t ax88796c_PacketSend(uint8_t *buffer,uint32_t length, uint16_t segnum);
 int32_t ax88796c_EndPacketSend(uint32_t length);
-int32_t ax88796c_PacketPadzero(uint32_t length, uint16_t segnum);
 
 #ifdef	__cplusplus
 }

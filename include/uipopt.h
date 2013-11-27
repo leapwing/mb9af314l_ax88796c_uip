@@ -124,7 +124,7 @@
  *
  * \hideinitializer
  */
-#define UIP_FIXEDETHADDR 0
+#define UIP_FIXEDETHADDR 1
 
 /** @} */
 /*------------------------------------------------------------------------------*/
@@ -535,5 +535,6 @@ typedef struct httpd_state uip_tcp_appstate_t
  */
 /** @} */
 /** @} */
+
 
 #endif /* __UIPOPT_H__ */

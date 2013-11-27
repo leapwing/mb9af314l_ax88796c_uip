@@ -1,0 +1,49 @@
+%!: /header.html  
+%! setleds <!-- trigger URL parser -->
+
+<h1>Static view on MB9AF314L & AX88796C Demo</h1>
+<p>
+Thank you for using FUJITSU FM3!.
+</p>
+<p>
+This website does not request current data via AJAX in the background but only updates values if it is reloaded from the server.
+</p>
+<p>
+This website displays the status of the FUJITSU FM3 Evaluation Board <i>FSSDC-9A314-EVB</i> and ethernet controllor <i>AX88796C</i>.<br>
+You can change the readings by turning the potentiomenter and the joystick.<br>
+The value on the ADC display can be changed by turning the potentiomenter.<br>
+The value on the KEY display can be changed by pressing the joystick(up and down).<br>
+The value on the LED display can be changed by pressing the joystick(right and left) or by sending a new one via this website.
+</p>
+<table>
+	<tr>
+		<th colspan="2">ADC and KEY</th>
+	</tr><tr>
+		<td>ADC</td><td>%! adcstatus
+</td>
+	</tr><tr>
+		<td>KEY</td><td>%! keyswitchstatus
+</td>
+	</tr>
+</table>
+<form name="sevenseg" action="/fujitsu_sk.shtml" method="get">
+<table>
+	<tr>
+		<th colspan="2">LED display</th>
+	</tr><tr>
+		<td>Current value</td><td>%! getleds
+</td>
+	</tr><tr>
+		<td>New value</td><td><input type="number" name="s" size="1" min="0" max="7" maxlength="1" value=""></td>
+	</tr><tr>
+		<td colspan="2" align="center"><input type="submit" value="Set Value"></td>
+	</tr>
+</table>
+</form>
+<br style="clear:both;">
+
+<p align="center">
+<a href="fujitsu_sk.shtml">Reload this page to update values</a>
+</p>
+</div>
+%!: /footer.html

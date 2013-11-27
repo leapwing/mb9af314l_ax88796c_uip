@@ -441,7 +441,7 @@ resolv_conf(u16_t *dnsserver)
     uip_udp_remove(resolv_conn);
   }
   
-  resolv_conn = uip_udp_new(dnsserver, HTONS(53));
+  resolv_conn = uip_udp_new((uip_ipaddr_t *)dnsserver, HTONS(53));
 }
 /*---------------------------------------------------------------------------*/
 /**

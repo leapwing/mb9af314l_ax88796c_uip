@@ -1,11 +1,11 @@
 #include "system.h"
+#include "dualtimer_delay.h"
 #include "spim_support.h"
 #include "ax88796c_spi.h"
-#include "phy.h"
 
 #include <stdio.h>
 
-#define TIMEOUT_CNT 100
+#define TIMEOUT_CNT 1000
 
 typedef struct{
 	uint8_t comp;
@@ -16,9 +16,7 @@ typedef struct{
 static ax88796c_conf_t ax88796c_data;
 static uint16_t tx_seqnum;
 
-void ax88796c_set_power_saving(uint8_t ps_level);
-int32_t ax88796c_checkbus(void);
-void ByteSwap(uint16_t* u16);
+static void ByteSwap(uint16_t* u16);
 
 uint16_t axspi_read_reg(uint8_t reg_addr)
 {
@@ -259,7 +257,7 @@ int32_t ax88796c_checkbus(void)
 	axspi_wakeup();
 	do{
 		axspi_read_status(&AxStatus);
-		if(++time_out > TIMEOUT_CNT){
+		if(++time_out > 4096){
 			return -1;
 		}
 	}while(!(AxStatus.status & AX_STATUS_READY));
@@ -301,13 +299,26 @@ int32_t ax88796c_clear_int(uint16_t isr)
 	return 0;
 }
 
+int32_t ax88796c_check_media(void)
+{
+	uint16_t bmsr;
+	bmsr = ax88796c_mdio_read(PHY_ID, MII_BMSR);
+	if (!(bmsr & BMSR_LSTATUS) && (ax88796c_data.islink)) {
+		ax88796c_data.islink = 0;
+	}else if((bmsr & BMSR_LSTATUS) && (!ax88796c_data.islink)){
+		ax88796c_data.islink = 1;
+	}
+	return ax88796c_data.islink;
+}
+
 int32_t ax88796c_init(uint8_t *macaddr)
 {
 	int32_t bor;
 	uint16_t phy_tmp;
 	
+	AX88796C_RST_INIT();
 	AX88796C_RST_OUT(0);
-	//_delay_ms(10);
+	_delay_ms(10);
 	AX88796C_RST_OUT(1);
 	AX88796C_CS_INIT();
 	AX88796C_INT_INIT();

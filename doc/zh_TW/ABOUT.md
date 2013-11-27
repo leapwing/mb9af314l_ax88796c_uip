@@ -1,72 +1,24 @@
-# MB9AF314L\_AX88796C\_uIP #
+## MB9AF314L\_AX88796C\_uIP Firmware ##
 
-# Contents
-- [Specification](#markdown-header-specification)   
-- [Dependencies Title](#markdown-header-dependencies-title)   
+簡易的Webserver測試程式
 
-1. [說明0](#good)
-2. [說明1](#MB9AF314L)
-3. 說明2
-4. 說明3
-5. 說明4
-6. 說明5
-7. 說明6
-8. 說明7
-9. 說明8
-10. 說明9
-11. 說明10
-12. 說明11
-13. 說明12
-14. 說明13
-15. 說明14
-16. 說明15
-17. 說明16
-18. 說明17
-19. 說明18
-20. 說明19
-21. 說明20
-22. 說明21
-23. 說明22
-24. 說明23
-25. 說明24
-26. 說明25
-27. 說明26
-28. 說明27
-29. 說明28
-30. 說明29
-31. 說明30
-32. 說明31
-33. 說明32
-34. 說明33
-35. 說明34
+硬體平台：MB9AF314L + AX88796C  
+軟體平台：uIP  
 
-### <a name="good"/>good
+介面:  
+1. SPI baudrate 4MHz MFS:CH7  
+2. UART baudrate 115200 MFS:CH4  
+3. LED x 3(GPIO)  
+4. Joystick x 1(GPIO)  
+5. potentiomenter x 1(AN01)	  
+6. GPIO for AX88796C RESET & SPI_SS
 
-end 
+使用：   
+使用實驗版來連線電腦網頁顯示狀態  
 
-This is a regular paragraph.
+Screenshot  
+![demo_1](https://lh4.googleusercontent.com/-CCpQ02i9L5Y/UpWkku1h0bI/AAAAAAAAAFI/Q32WA6yvkuc/w700-h557-no/fm9baf314l_ax88796c_uip_demo1.jpg)  
+▲ Demo1 Screen    
+![demo_2](https://lh4.googleusercontent.com/-5i8VeRAL-sE/UpWxZcF4BMI/AAAAAAAAAHE/bWHt_CB3bl8/w697-h589-no/fm9baf314l_ax88796c_uip_demo2.jpg)  
+▲ Demo2 Screen  
 
-<table>
-    <tr>
-        <td>Foo</td>
-		<td>Foo1</td>
-    </tr>
-</table>
-
-	 <div class="footer">
-	        &copy; 2004 Foo Corporation
-	 </div>
-
-
-
-## Specification  
-Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. 
-
-## Dependencies Title
-Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. Example text blah. 
-
-First Header  | Second Header
-------------- | -------------
-Content Cell  | Content Cell
-Content Cell  | Content Cell
- 

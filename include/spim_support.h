@@ -224,7 +224,7 @@
 #if   SPI_LOC == 0
 #define ATTACH_MFS_SPI() { FM3_GPIO->EPFR08 = (FM3_GPIO->EPFR08 & ~(0x3F << 22)) | (0x14 << 22);  FM3_GPIO->PFR5 |= 0x07 << 9; }
 #elif SPI_LOC == 1
-#define ATTACH_MFS_SPI() { FM3_GPIO->EPFR08 = (FM3_GPIO->EPFR08 & ~(0x3F << 22)) | (0x2A << 22); FM3_GPIO->PFR4 |= 0x07 << 13; }
+#define ATTACH_MFS_SPI() { FM3_GPIO->EPFR08 = (FM3_GPIO->EPFR08 & ~(0x3F << 22)) | (0x2A << 22); FM3_GPIO->PFR4 |= 0x07 << 12; }
 #elif SPI_LOC == 2
 #define ATTACH_MFS_SPI() { FM3_GPIO->EPFR08 = (FM3_GPIO->EPFR08 & ~(0x3F << 22)) | (0x3F << 22); FM3_GPIO->PFRB |= 0x07 << 0; }
 #endif

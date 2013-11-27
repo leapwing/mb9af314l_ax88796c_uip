@@ -48,7 +48,7 @@
 #define __SMTP_H__
 
 #include "uipopt.h"
-
+#include "psock.h"
 /**
  * Error number that signifies a non-error condition.
  */
@@ -88,7 +88,7 @@ struct smtp_state {
   
   u16_t sentlen, textlen;
   u16_t sendptr;
-
+	struct pt psock;
 };
 
 

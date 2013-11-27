@@ -40,6 +40,7 @@
 #include "uip-fw.h"
 #include "uip_arch.h"
 
+#include "ax88796c_spi.h"
 
 
 #define BUF ((struct uip_tcpip_hdr *)&uip_buf[UIP_LLH_LEN])
@@ -87,7 +88,7 @@ uip_split_output(void)
     
     /* Transmit the first packet. */
     /*    uip_fw_output();*/
-    tcpip_output();
+    ax88796c_packet_send(uip_buf,uip_len);
 
     /* Now, create the second packet. To do this, it is not enough to
        just alter the length field, but we must also update the TCP
@@ -126,10 +127,10 @@ uip_split_output(void)
 
     /* Transmit the second packet. */
     /*    uip_fw_output();*/
-    tcpip_output();
+    ax88796c_packet_send(uip_buf,uip_len);
   } else {
     /*    uip_fw_output();*/
-    tcpip_output();
+    ax88796c_packet_send(uip_buf,uip_len);
   }
      
 }
