@@ -1,6 +1,6 @@
 /********************************************************************************/
 /*!
-	@file			spim_support.h
+	@file			spim_dma_support.h
 	@author         
     @version        1.00
     @date           2013.07.01
@@ -13,8 +13,8 @@
 		BSD License. See Copyright.txt
 */
 /********************************************************************************/
-#ifndef __SPI_SUPPORT_H
-#define __SPI_SUPPORT_H
+#ifndef __SPI_DMA_SUPPORT_H
+#define __SPI_DMA_SUPPORT_H
 
 #ifdef __cplusplus
  extern "C" {
@@ -37,6 +37,9 @@
 #define SPI_BAUDLATE			4000000UL	/* SPI Baudrate */
 #define SPI_MFS					7			/* MFS channel to be used as SPI (0-3,4-7) */
 #define SPI_LOC					1			/* Pin relocation number (0-2) */
+/* comment dma function */
+#define SPI_DMA_TXCH            3           /* SPI TX DMA Channel */
+#define SPI_DMA_RXCH            2           /* SPI RX DMA Channel */
 
 #if SPI_MFS >= 4
 #define SPI_FIFO_MODE 1
@@ -231,6 +234,165 @@
 
 #endif
 
+
+#ifdef SPI_DMA_TXCH
+#if SPI_DMA_TXCH == 0
+#define MFS_SPI_TX_DMA_IRQHander   DMAC0_Handler 
+#define MFS_SPI_TX_DMA_IRQn        DMAC0_IRQn
+#define MFS_SPI_TX_DMACA           FM3_DMAC->DMACA0
+#define MFS_SPI_TX_DMACB           FM3_DMAC->DMACB0
+#define MFS_SPI_TX_DMACSA          FM3_DMAC->DMACSA0
+#define MFS_SPI_TX_DMACDA          FM3_DMAC->DMACDA0
+#elif SPI_DMA_TXCH == 1
+#define MFS_SPI_TX_DMA_IRQHander   DMAC1_Handler 
+#define MFS_SPI_TX_DMA_IRQn        DMAC1_IRQn
+#define MFS_SPI_TX_DMACA           FM3_DMAC->DMACA1
+#define MFS_SPI_TX_DMACB           FM3_DMAC->DMACB1
+#define MFS_SPI_TX_DMACSA          FM3_DMAC->DMACSA1
+#define MFS_SPI_TX_DMACDA          FM3_DMAC->DMACDA1
+#elif SPI_DMA_TXCH == 2
+#define MFS_SPI_TX_DMA_IRQHander   DMAC2_Handler 
+#define MFS_SPI_TX_DMA_IRQn        DMAC2_IRQn
+#define MFS_SPI_TX_DMACA           FM3_DMAC->DMACA2
+#define MFS_SPI_TX_DMACB           FM3_DMAC->DMACB2
+#define MFS_SPI_TX_DMACSA          FM3_DMAC->DMACSA2
+#define MFS_SPI_TX_DMACDA          FM3_DMAC->DMACDA2
+#elif SPI_DMA_TXCH == 3
+#define MFS_SPI_TX_DMA_IRQHander   DMAC3_Handler 
+#define MFS_SPI_TX_DMA_IRQn        DMAC3_IRQn
+#define MFS_SPI_TX_DMACA           FM3_DMAC->DMACA3
+#define MFS_SPI_TX_DMACB           FM3_DMAC->DMACB3
+#define MFS_SPI_TX_DMACSA          FM3_DMAC->DMACSA3
+#define MFS_SPI_TX_DMACDA          FM3_DMAC->DMACDA3
+#elif SPI_DMA_TXCH == 4
+#define MFS_SPI_TX_DMA_IRQHander   DMAC4_Handler 
+#define MFS_SPI_TX_DMA_IRQn        DMAC4_IRQn
+#define MFS_SPI_TX_DMACA           FM3_DMAC->DMACA4
+#define MFS_SPI_TX_DMACB           FM3_DMAC->DMACB4
+#define MFS_SPI_TX_DMACSA          FM3_DMAC->DMACSA4
+#define MFS_SPI_TX_DMACDA          FM3_DMAC->DMACDA4
+#elif SPI_DMA_TXCH == 5
+#define MFS_SPI_TX_DMA_IRQHander   DMAC5_Handler 
+#define MFS_SPI_TX_DMA_IRQn        DMAC5_IRQn
+#define MFS_SPI_TX_DMACA           FM3_DMAC->DMACA5
+#define MFS_SPI_TX_DMACB           FM3_DMAC->DMACB5
+#define MFS_SPI_TX_DMACSA          FM3_DMAC->DMACSA5
+#define MFS_SPI_TX_DMACDA          FM3_DMAC->DMACDA5
+#elif SPI_DMA_TXCH == 6
+#define MFS_SPI_TX_DMA_IRQHander   DMAC6_Handler 
+#define MFS_SPI_TX_DMA_IRQn        DMAC6_IRQn
+#define MFS_SPI_TX_DMACA           FM3_DMAC->DMACA6
+#define MFS_SPI_TX_DMACB           FM3_DMAC->DMACB6
+#define MFS_SPI_TX_DMACSA          FM3_DMAC->DMACSA6
+#define MFS_SPI_TX_DMACDA          FM3_DMAC->DMACDA6
+#elif SPI_DMA_TXCH == 7
+#define MFS_SPI_TX_DMA_IRQHander   DMAC7_Handler 
+#define MFS_SPI_TX_DMA_IRQn        DMAC7_IRQn
+#define MFS_SPI_TX_DMACA           FM3_DMAC->DMACA7
+#define MFS_SPI_TX_DMACB           FM3_DMAC->DMACB7
+#define MFS_SPI_TX_DMACSA          FM3_DMAC->DMACSA7
+#define MFS_SPI_TX_DMACDA          FM3_DMAC->DMACDA7
+#endif
+   
+#if SPI_MFS == 0
+#define MFS_SPI_TX_DRQSEL()		  {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 13)) | (1 << 13);}      
+#elif SPI_MFS == 1
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 15)) | (1 << 15);} 
+#elif SPI_MFS == 2
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 17)) | (1 << 17);} 
+#elif SPI_MFS == 3
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 19)) | (1 << 19);} 
+#elif SPI_MFS == 4
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 21)) | (1 << 21);} 
+#elif SPI_MFS == 5
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 23)) | (1 << 23);} 
+#elif SPI_MFS == 6
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 25)) | (1 << 25);} 
+#elif SPI_MFS == 7
+#define MFS_SPI_TX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 27)) | (1 << 27);} 
+#endif
+   
+#endif
+   
+#ifdef SPI_DMA_RXCH
+#if SPI_DMA_RXCH == 0
+#define MFS_SPI_RX_DMA_IRQHander   DMAC0_Handler 
+#define MFS_SPI_RX_DMA_IRQn        DMAC0_IRQn
+#define MFS_SPI_RX_DMACA           FM3_DMAC->DMACA0
+#define MFS_SPI_RX_DMACB           FM3_DMAC->DMACB0
+#define MFS_SPI_RX_DMACSA          FM3_DMAC->DMACSA0
+#define MFS_SPI_RX_DMACDA          FM3_DMAC->DMACDA0
+#elif SPI_DMA_RXCH == 1
+#define MFS_SPI_RX_DMA_IRQHander   DMAC1_Handler 
+#define MFS_SPI_RX_DMA_IRQn        DMAC1_IRQn
+#define MFS_SPI_RX_DMACA           FM3_DMAC->DMACA1
+#define MFS_SPI_RX_DMACB           FM3_DMAC->DMACB1
+#define MFS_SPI_RX_DMACSA          FM3_DMAC->DMACSA1
+#define MFS_SPI_RX_DMACDA          FM3_DMAC->DMACDA1
+#elif SPI_DMA_RXCH == 2
+#define MFS_SPI_RX_DMA_IRQHander   DMAC2_Handler 
+#define MFS_SPI_RX_DMA_IRQn        DMAC2_IRQn
+#define MFS_SPI_RX_DMACA           FM3_DMAC->DMACA2
+#define MFS_SPI_RX_DMACB           FM3_DMAC->DMACB2
+#define MFS_SPI_RX_DMACSA          FM3_DMAC->DMACSA2
+#define MFS_SPI_RX_DMACDA          FM3_DMAC->DMACDA2
+#elif SPI_DMA_RXCH == 3
+#define MFS_SPI_RX_DMA_IRQHander   DMAC3_Handler 
+#define MFS_SPI_RX_DMA_IRQn        DMAC3_IRQn
+#define MFS_SPI_RX_DMACA           FM3_DMAC->DMACA3
+#define MFS_SPI_RX_DMACB           FM3_DMAC->DMACB3
+#define MFS_SPI_RX_DMACSA          FM3_DMAC->DMACSA3
+#define MFS_SPI_RX_DMACDA          FM3_DMAC->DMACDA3
+#elif SPI_DMA_RXCH == 4
+#define MFS_SPI_RX_DMA_IRQHander   DMAC4_Handler 
+#define MFS_SPI_RX_DMA_IRQn        DMAC4_IRQn
+#define MFS_SPI_RX_DMACA           FM3_DMAC->DMACA4
+#define MFS_SPI_RX_DMACB           FM3_DMAC->DMACB4
+#define MFS_SPI_RX_DMACSA          FM3_DMAC->DMACSA4
+#define MFS_SPI_RX_DMACDA          FM3_DMAC->DMACDA4
+#elif SPI_DMA_RXCH == 5
+#define MFS_SPI_RX_DMA_IRQHander   DMAC5_Handler 
+#define MFS_SPI_RX_DMA_IRQn        DMAC5_IRQn
+#define MFS_SPI_RX_DMACA           FM3_DMAC->DMACA5
+#define MFS_SPI_RX_DMACB           FM3_DMAC->DMACB5
+#define MFS_SPI_RX_DMACSA          FM3_DMAC->DMACSA5
+#define MFS_SPI_RX_DMACDA          FM3_DMAC->DMACDA5
+#elif SPI_DMA_RXCH == 6
+#define MFS_SPI_RX_DMA_IRQHander   DMAC6_Handler 
+#define MFS_SPI_RX_DMA_IRQn        DMAC6_IRQn
+#define MFS_SPI_RX_DMACA           FM3_DMAC->DMACA6
+#define MFS_SPI_RX_DMACB           FM3_DMAC->DMACB6
+#define MFS_SPI_RX_DMACSA          FM3_DMAC->DMACSA6
+#define MFS_SPI_RX_DMACDA          FM3_DMAC->DMACDA6
+#elif SPI_DMA_RXCH == 7
+#define MFS_SPI_RX_DMA_IRQHander   DMAC7_Handler 
+#define MFS_SPI_RX_DMA_IRQn        DMAC7_IRQn
+#define MFS_SPI_RX_DMACA           FM3_DMAC->DMACA7
+#define MFS_SPI_RX_DMACB           FM3_DMAC->DMACB7
+#define MFS_SPI_RX_DMACSA          FM3_DMAC->DMACSA7
+#define MFS_SPI_RX_DMACDA          FM3_DMAC->DMACDA7
+#endif
+
+#if SPI_MFS == 0
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 12)) | (1 << 12);}      
+#elif SPI_MFS == 1
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 14)) | (1 << 14);} 
+#elif SPI_MFS == 2
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 16)) | (1 << 16);} 
+#elif SPI_MFS == 3
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 18)) | (1 << 18);} 
+#elif SPI_MFS == 4
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 20)) | (1 << 20);} 
+#elif SPI_MFS == 5
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 22)) | (1 << 22);} 
+#elif SPI_MFS == 6
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 24)) | (1 << 24);} 
+#elif SPI_MFS == 7
+#define MFS_SPI_RX_DRQSEL()       {FM3_INTREQ->DRQSEL = (FM3_INTREQ->DRQSEL & ~(1 << 26)) | (1 << 26);} 
+#endif
+   
+#endif
+
 /*
  *  Register Bit Definition
  */
@@ -294,6 +456,8 @@ extern int32_t  SPIDev_SetBaudrate(int32_t Baudrate);
 extern int32_t  SPIDev_BufTxRx(void *pDataTx, void *pDataRx, uint32_t Size);
 extern int32_t  SPIDev_DataTx(void *pData, uint32_t *pSize);
 extern int32_t  SPIDev_DataRx(void *pData, uint32_t *pSize);
+extern int32_t  SPIDev_DMA_DataTx(void *pData, uint32_t Size);
+extern int32_t  SPIDev_DMA_DataRx(void *pData, uint32_t Size);
 
 /* Externs */
 
@@ -302,4 +466,4 @@ extern int32_t  SPIDev_DataRx(void *pData, uint32_t *pSize);
 }
 #endif
 
-#endif	/* __SPI_SUPPORT_H */
+#endif	/* __SPI_DMA_SUPPORT_H */

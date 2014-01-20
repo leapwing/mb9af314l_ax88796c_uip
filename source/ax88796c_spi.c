@@ -1,6 +1,6 @@
 #include "system.h"
 #include "dualtimer_delay.h"
-#include "spim_support.h"
+#include "spim_dma_support.h"
 #include "ax88796c_spi.h"
 
 #include <stdio.h>
@@ -86,7 +86,15 @@ void axspi_read_rxq (void *data, int32_t len)
 	size = ax88796c_data.comp ? 2 : 5;
 	SPIDev_DataTx(&opbuf, &size);
 	size = len;
+#ifndef SPI_DMA_RXCH
 	SPIDev_DataRx(data, &size);
+#else
+	if(size < 64){
+		SPIDev_DataRx(data, &size);
+	}else{
+		SPIDev_DMA_DataRx(data, size);
+	}
+#endif
 	AX88796C_CSH();
 }
 
@@ -103,7 +111,15 @@ void axspi_write_txq (void *data, int len)
 	size = ax88796c_data.comp ? 1 : 4;
 	SPIDev_DataTx(&opbuf, &size);
 	size = len;
+#ifndef SPI_DMA_TXCH
 	SPIDev_DataTx(data, &size);
+#else
+	if(size < 64){
+		SPIDev_DataTx(data, &size);
+	}else{
+		SPIDev_DMA_DataTx(data, size);
+	}
+#endif
 	AX88796C_CSH();
 }
 
@@ -317,11 +333,11 @@ int32_t ax88796c_init(uint8_t *macaddr)
 	uint16_t phy_tmp;
 	
 	AX88796C_RST_INIT();
-	AX88796C_RST_OUT(0);
-	_delay_ms(10);
-	AX88796C_RST_OUT(1);
 	AX88796C_CS_INIT();
 	AX88796C_INT_INIT();
+    AX88796C_RST_OUT(0);
+	_delay_ms(10);
+	AX88796C_RST_OUT(1);
 	// Set up SPI
    	SPIDev_Init();
 	
@@ -361,7 +377,7 @@ int32_t ax88796c_init(uint8_t *macaddr)
 	ax88796c_set_enetaddr(macaddr);
 	
 	/* Enable TX checksum */
-	axspi_write_reg(P4_COETCR0, (COETCR0_TXIP | COETCR0_TXTCP | COETCR0_TXUDP));
+	axspi_write_reg(P4_COETCR0, (COETCR0_TXIP | COETCR0_TXTCP | COETCR0_TXUDP | COETCR0_TXICMP));
 	/* Enable RX checksum */
 	axspi_write_reg(P4_COERCR0, (COERCR0_RXIPCE | COERCR0_RXTCPE | COERCR0_RXUDPE));
 
@@ -386,7 +402,7 @@ int32_t ax88796c_init(uint8_t *macaddr)
 	ax88796c_mdio_write(PHY_ID, MII_BMCR, phy_tmp | BMCR_ANRESTART);
 
 	axspi_write_reg(P0_ISR, 0xFFFF);
-	axspi_write_reg(P0_IMR, IMR_ENALL);
+	axspi_write_reg(P0_IMR, ~(IMR_RXPKT)/*IMR_ENALL*/);
 	return 0;
 }
 

@@ -36,7 +36,6 @@
 #include "uip.h"
 #include "uip_arp.h"
 #include "timer.h"
-//#include "httpd.h"
 #include "ax88796c_spi.h"
 
 #include "board.h"

@@ -1,5 +1,7 @@
 %!: /header.html
-<h1>System processes</h1><br><table width="100%">
+<h1>System processes</h1>
+<table width="90%">
 <tr><th>ID</th><th>Name</th><th>Priority</th><th>Poll handler</th><th>Event handler</th><th>Procstate</th></tr>
 %! processes
+</table><br>
 %!: /footer.html

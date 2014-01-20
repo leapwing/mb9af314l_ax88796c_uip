@@ -43,8 +43,13 @@ function processResponse() {
     }
 
 function sendLEDData() {
-    xhrs.open('get', 'fujitsu_sk.shtml?ledval='+document.getElementById('newledval').value);
-    xhrs.send();  
+	var ledval=document.getElementById('newledval').value;
+	if(ledval < 8){
+		xhrs.open('get', 'fujitsu_sk.shtml?ledval='+ledval);
+		xhrs.send();  
+	}else{
+		alert("Over number!");
+	}
 }
 
 function searchKeyPress(e){
@@ -99,7 +104,7 @@ The value on the LED display can be changed by pressing the joystick(right and l
 <td>Current value</td><td><span id="lv">&nbsp;</span>
 </td>
 </tr><tr>
-<td>New value</td><td><input type="text" name="ledval" size="1" maxlength="1" id="newledval" value="" onkeypress="javascript:searchKeyPress(event);"></td>
+<td>New value</td><td><input type="number" name="ledval" size="1" min="0" max="7" maxlength="1" id="newledval" value="" onkeypress="javascript:searchKeyPress(event);"></td>
 </tr><tr>
 <td colspan="2" style="text-align:center"><input type="button" value="Set Value" onClick="javascript:sendLEDData()"></td>
 </tr>

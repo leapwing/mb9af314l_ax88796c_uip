@@ -455,37 +455,38 @@ typedef struct axspi_status {
 #define RX_HDR2_IGMP (0x0C00)
 #define RX_HDR2_IGMPv6 (0x1400)
 
+#define PACK_STRUCT_STRUCT 
 /* Tx headers structure */
 struct tx_sop_header {
 	uint16_t flags_pktlen;
 	uint16_t seqnum_pktlenbar;
-} __attribute__((packed));
+} PACK_STRUCT_STRUCT;
 
 struct tx_segment_header {
 	uint16_t flags_seqnum_seglen;
 	uint16_t eo_so_seglenbar;
-} __attribute__((packed));
+} PACK_STRUCT_STRUCT;
 
 struct tx_eop_header {
 	uint16_t seqnum_pktlen;
 	uint16_t seqnumbar_pktlenbar;
-} __attribute__((packed));
+} PACK_STRUCT_STRUCT;
 
 struct tx_header {
 	struct tx_sop_header sop;
 	struct tx_segment_header seg;
 	struct tx_eop_header eop;
-} __attribute__((packed));
+} PACK_STRUCT_STRUCT;
 
 struct rx_hdr1 {
 	uint16_t flags_len;
 	uint16_t seq_lenbar;
-}__attribute__((packed));
+}PACK_STRUCT_STRUCT;
 
 struct rx_header {
 	struct rx_hdr1 hdr1;
 	uint16_t hdr2;
-} __attribute__((packed));
+} PACK_STRUCT_STRUCT;
 
 #define RX_HEADER1_SIZE			4
 #define	RX_HEADER12_SIZE		6
